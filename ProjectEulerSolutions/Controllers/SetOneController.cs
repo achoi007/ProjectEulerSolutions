@@ -54,7 +54,6 @@ namespace ProjectEulerSolutions.Controllers
         {
             ulong max = 2 * n * n + n;  // because n^2 + n*n + n is divisible by n
             var cal = new PrimeCalculator((uint)max / 3);
-            cal.ExtendToMinimumGT(max);
 
             int max_a = 0, max_b = 0, max_i = 0;
             int minus_n = (-1 * (int)n) + 1;
@@ -71,7 +70,7 @@ namespace ProjectEulerSolutions.Controllers
                             break;
                         }
 
-                        if (!cal.IsPrimeInRange((ulong) p))
+                        if (!cal.IsPrimeAutoExpand((ulong) p))
                         {
                             break;
                         }
@@ -92,7 +91,7 @@ namespace ProjectEulerSolutions.Controllers
 
         public ActionResult Problem35()
         {
-            return View("Question", new Question("Circular prime below n?", 35, Name));
+            return View("Question", new Question("Circular primes below n?", 35, Name));
         }
 
         [HttpPost]

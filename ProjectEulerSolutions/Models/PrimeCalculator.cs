@@ -27,7 +27,7 @@ namespace ProjectEulerSolutions.Models
                 Resize(len);
             }
 
-            for (ulong i = primes_[len_ - 1] + 2; len_ < len; i += 2)
+            for (ulong i = LastPrime + 2; len_ < len; i += 2)
             {
                 while (!IsPrime(i))
                 {
@@ -40,7 +40,7 @@ namespace ProjectEulerSolutions.Models
 
         public void ExtendToMinimumGT(ulong value)
         {
-            while (primes_[len_ - 1] <= value)
+            while (LastPrime <= value)
             {
                 if (len_ == primes_.Length)
                 {
@@ -48,11 +48,22 @@ namespace ProjectEulerSolutions.Models
                 }
 
                 ulong i;
-                for (i = primes_[len_ - 1] + 2; !IsPrime(i); i += 2) ;
+                for (i = LastPrime + 2; !IsPrime(i); i += 2) ;
 
                 primes_[len_] = i;
                 ++len_;
             }
+        }
+
+        public void ExtendToSquareRoot(ulong value)
+        {
+            if (LastPrime * LastPrime > value)
+            {
+                return;
+            }
+
+            value = (ulong)Math.Ceiling(Math.Sqrt(value));
+            ExtendToMinimumGT(value);
         }
 
         public ulong[] Primes
@@ -68,6 +79,12 @@ namespace ProjectEulerSolutions.Models
         public bool IsPrimeInRange(ulong n)
         {
             return Array.BinarySearch(primes_, 0, (int)len_, n) >= 0;
+        }
+
+        public bool IsPrimeAutoExpand(ulong n)
+        {
+            ExtendToSquareRoot(n);
+            return IsPrime(n);
         }
 
         private void Resize(uint capacity)
