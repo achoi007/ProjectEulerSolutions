@@ -2,6 +2,12 @@
 [Bb]in/
 [Oo]bj/
 
+# NuGet
+packages/
+
+# Resharper
+_Reshaper*/
+
 # mstest test results
 TestResults
 

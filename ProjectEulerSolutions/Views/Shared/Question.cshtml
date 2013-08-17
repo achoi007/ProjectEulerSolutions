@@ -1,0 +1,19 @@
+﻿@model ProjectEulerSolutions.Models.Question
+
+@{
+    ViewBag.Title = "Question";
+    var url = "http://projecteuler.net/problem=" + Model.Number;
+    var homeUrl = "/" + Model.Controller;
+}
+
+<h2>Question @Model.Number</h2>
+
+<iframe width="600" height="500" src="@url"></iframe>
+
+@using (Html.BeginForm("Problem" + @Model.Number, @Model.Controller, FormMethod.Post)) { 
+    <label for="n">@Model.Query</label>
+    <input type="number" name="n"/>
+    <button type="submit">Submit</button>
+}
+
+<p><a href="@homeUrl">Go back</a> to set</p>

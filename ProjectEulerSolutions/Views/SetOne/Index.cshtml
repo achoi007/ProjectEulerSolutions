@@ -1,0 +1,16 @@
+﻿@model IEnumerable<int>
+
+@{
+    ViewBag.Title = "Solutions for ProjectEuler.net";
+}
+
+<h2>Solutions for these questions</h2>
+
+<ul>
+    @foreach (var num in Model)
+    {
+        <li>
+            @Html.ActionLink("Problem " + @num, "Problem" + @num)
+        </li>
+    }
+</ul>

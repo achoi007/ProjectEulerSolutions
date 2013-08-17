@@ -1,0 +1,17 @@
+﻿@model ProjectEulerSolutions.Models.Answer
+
+@{
+    ViewBag.Title = "Answer";
+    var url = "http://projecteuler.net/problem=" + Model.Number;    
+    var homeUrl = "/" + Model.Controller;
+    var questionUrl = "/" + Model.Controller + "/Problem" + Model.Number;
+}
+
+<h2>Answer to question @Model.Number</h2>
+
+<iframe width="600" height="500" src="@url"></iframe>
+
+<p>@Model.Message @Model.Value</p>
+
+<p><a href="@questionUrl">Go back</a> to question.</p>
+<p><a href="@homeUrl">Go back</a> to set.</p>
