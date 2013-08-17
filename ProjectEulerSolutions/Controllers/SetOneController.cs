@@ -13,7 +13,7 @@ namespace ProjectEulerSolutions.Controllers
 
         public ActionResult Index()
         {
-            int[] questions = new int[] { 7, 10, 27, 35 };
+            int[] questions = new int[] { 7, 10, 27, 35, };
             return View(questions);
         }
 
@@ -103,8 +103,8 @@ namespace ProjectEulerSolutions.Controllers
             Func<ulong, bool> isCircular = (i) =>
             {
                 ulong c = i;
-                int numDigits = c.ToString().Length;
-                ulong factor = (ulong)(Math.Pow(10, numDigits - 1));
+                uint numDigits = Utils.NumOfDigits(c);
+                ulong factor = Utils.PowerOfTen(numDigits - 1);
                 do
                 {
                     ulong lower = (c / 10);
