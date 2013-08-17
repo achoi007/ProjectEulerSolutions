@@ -20,6 +20,10 @@ namespace ProjectEulerSolutions.Models
             len_ = 2;
         }   
  
+        /// <summary>
+        /// Fill calculator with at least len prime numbers.
+        /// </summary>
+        /// <param name="len"></param>
         public void ExtendToLength(uint len)
         {
             if (len > primes_.Length)
@@ -38,6 +42,10 @@ namespace ProjectEulerSolutions.Models
             }
         }
 
+        /// <summary>
+        /// Fill calculator so that largest prime number is the next prime number greater than or equal to value.
+        /// </summary>
+        /// <param name="value"></param>
         public void ExtendToMinimumGT(ulong value)
         {
             while (LastPrime <= value)
@@ -55,6 +63,10 @@ namespace ProjectEulerSolutions.Models
             }
         }
 
+        /// <summary>
+        /// Fill calculator so that largest prime number is at least larger than square root of value.
+        /// </summary>
+        /// <param name="value"></param>
         public void ExtendToSquareRoot(ulong value)
         {
             if (LastPrime * LastPrime > value)
@@ -66,25 +78,48 @@ namespace ProjectEulerSolutions.Models
             ExtendToMinimumGT(value);
         }
 
+        /// <summary>
+        /// Get all calculated prime numbers
+        /// </summary>
         public ulong[] Primes
         {
             get { return primes_; }
         }
 
+        /// <summary>
+        /// Get the largest prime number calculated so far.
+        /// </summary>
         public ulong LastPrime
         {
             get { return primes_[len_ - 1]; }
         }
 
+        /// <summary>
+        /// Check if n is a prime number using fast binary search.  The precondition is that N must be <= largest prime number
+        /// </summary>
+        /// <param name="n"></param>
+        /// <returns></returns>
         public bool IsPrimeInRange(ulong n)
         {
             return Array.BinarySearch(primes_, 0, (int)len_, n) >= 0;
         }
 
+        /// <summary>
+        /// Check if n is a prime number by either using fast binary search or automatic compute all primes up to square root of N.
+        /// </summary>
+        /// <param name="n"></param>
+        /// <returns></returns>
         public bool IsPrimeAutoExpand(ulong n)
         {
-            ExtendToSquareRoot(n);
-            return IsPrime(n);
+            if (LastPrime >= n)
+            {
+                return IsPrimeInRange(n);
+            }
+            else
+            {
+                ExtendToSquareRoot(n);
+                return IsPrime(n);
+            }
         }
 
         private void Resize(uint capacity)
