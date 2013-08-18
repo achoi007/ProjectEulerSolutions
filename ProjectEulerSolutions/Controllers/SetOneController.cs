@@ -13,7 +13,7 @@ namespace ProjectEulerSolutions.Controllers
         private string Name = "SetOne";
 
         // Helper function used to display question
-        private ViewResult ViewQuestion(string mesg, int questionNum)
+        private ViewResult ViewQuestion(int questionNum, string mesg)
         {
             return View("Question", new Question(mesg, questionNum, Name));
         }
@@ -33,13 +33,13 @@ namespace ProjectEulerSolutions.Controllers
 
         public ActionResult Index()
         {
-            int[] questions = new int[] { 7, 10, 27, 35, 41 };
+            int[] questions = new int[] { 7, 10, 27, 35, 41, 47 };
             return View(questions);
         }
 
         public ActionResult Problem7()
         {
-            return ViewQuestion("What is the n-th prime number?", 7);
+            return ViewQuestion(7, "What is the n-th prime number?");
         }
 
         [HttpPost]
@@ -52,7 +52,7 @@ namespace ProjectEulerSolutions.Controllers
 
         public ActionResult Problem10()
         {
-            return ViewQuestion("What is the sum of all primes below n?", 10);
+            return ViewQuestion(10, "What is the sum of all primes below n?");
         }
 
         [HttpPost]
@@ -66,7 +66,7 @@ namespace ProjectEulerSolutions.Controllers
 
         public ActionResult Problem27()
         {
-            return ViewQuestion("Quadratic primes with abs(coefficients) < n?", 27);
+            return ViewQuestion(27, "Quadratic primes with abs(coefficients) < n?");
         }
 
         [HttpPost]
@@ -111,7 +111,7 @@ namespace ProjectEulerSolutions.Controllers
 
         public ActionResult Problem35()
         {
-            return ViewQuestion("Circular primes below n?", 35);
+            return ViewQuestion(35, "Circular primes below n?");
         }
 
         [HttpPost]
@@ -147,7 +147,7 @@ namespace ProjectEulerSolutions.Controllers
 
         public ActionResult Problem41()
         {
-            return ViewQuestion("Largest pandigital prime with n-digit?", 41);
+            return ViewQuestion(41, "Largest pandigital prime with n-digit?");
         }
 
         [HttpPost]
@@ -168,7 +168,7 @@ namespace ProjectEulerSolutions.Controllers
                 var permutations = new Permutations<int>(digits);
 
                 var allPrimes = permutations.Select(numList => numList.MakeNumber())
-                    .Where(num => (num % 2 != 0) && cal.IsPrimeAutoExpand(num)).ToList();
+                    .Where(num => cal.IsPrimeAutoExpand(num)).ToList();
 
                 // If there is at least 1 prime with n-digit, find the maximum amongst these primes and 
                 // that's the answer
@@ -183,6 +183,37 @@ namespace ProjectEulerSolutions.Controllers
             }
 
             return ViewAnswer(41, "No n-digit pandigital prime found.", 0);
+        }
+
+        public ActionResult Problem47()
+        {
+            return ViewQuestion(47, "First N consecutive integers to have N distinct prime factors");
+        }
+
+        [HttpPost]
+        public ActionResult Problem47(uint n)
+        {
+            var cal = new PrimeCalculator();
+            uint cnt = 0;
+            ulong potentialLeft = 0;
+
+            for (ulong i = 1; cnt < n; i++)
+            {
+                if (i.GetDistinctPrimeFactors(cal).Count() == n)
+                {
+                    if (cnt == 0)
+                    {
+                        potentialLeft = i;
+                    }
+                    ++cnt;
+                }
+                else
+                {
+                    cnt = 0;
+                }
+            }
+
+            return ViewAnswer(47, "Earliest consecutive integers with " + n + " prime factors starts at", potentialLeft);
         }
     }
 }

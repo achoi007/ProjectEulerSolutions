@@ -83,7 +83,19 @@ namespace ProjectEulerSolutions.Models
         /// </summary>
         public ulong[] Primes
         {
-            get { return primes_; }
+            get
+            {
+                if (primes_.Length == len_)
+                {
+                    return primes_;
+                }
+                else
+                {
+                    ulong[] reduced = new ulong[len_];
+                    Array.Copy(primes_, reduced, len_);
+                    return reduced;
+                }
+            }
         }
 
         /// <summary>
@@ -131,7 +143,7 @@ namespace ProjectEulerSolutions.Models
 
         private bool IsPrime(ulong n)
         {
-            for (int i = 1; i < primes_.Length; i++)
+            for (int i = 0; i < primes_.Length; i++)
             {
                 ulong p = primes_[i];
 
