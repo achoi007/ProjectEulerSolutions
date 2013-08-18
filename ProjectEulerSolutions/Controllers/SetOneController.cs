@@ -11,6 +11,25 @@ namespace ProjectEulerSolutions.Controllers
     {
         private string Name = "SetOne";
 
+        // Helper function used to display question
+        private ViewResult ViewQuestion(string mesg, int questionNum)
+        {
+            return View("Question", new Question(mesg, questionNum, Name));
+        }
+
+        // Helper function used to display answer
+        private ViewResult ViewAnswer(int questionNum, string mesg, ulong value)
+        {
+            return View("Answer", new Answer(questionNum, mesg, value, Name));
+        }
+
+        // Helper function used to display answer
+        private ViewResult ViewAnswer(int questionNum, string mesg, long value)
+        {
+            return View("Answer", new Answer(questionNum, mesg, value, Name));
+        }
+
+
         public ActionResult Index()
         {
             int[] questions = new int[] { 7, 10, 27, 35, };
@@ -19,7 +38,7 @@ namespace ProjectEulerSolutions.Controllers
 
         public ActionResult Problem7()
         {
-            return View("Question", new Question("What is the n-th prime number?", 7, Name));
+            return ViewQuestion("What is the n-th prime number?", 7);
         }
 
         [HttpPost]
@@ -27,12 +46,12 @@ namespace ProjectEulerSolutions.Controllers
         {
             var cal = new PrimeCalculator(n);
             cal.ExtendToLength(n);
-            return View("Answer", new Answer(7, "The " + n + "-th prime number is", cal.LastPrime, Name));
+            return ViewAnswer(7, "The " + n + "-th prime number is", cal.LastPrime);
         }
 
         public ActionResult Problem10()
         {
-            return View("Question", new Question("What is the sum of all primes below n?", 10, Name));
+            return ViewQuestion("What is the sum of all primes below n?", 10);
         }
 
         [HttpPost]
@@ -41,12 +60,12 @@ namespace ProjectEulerSolutions.Controllers
             var cal = new PrimeCalculator((uint)n / 3);
             cal.ExtendToMinimumGT(n);
             var sum = cal.Primes.Sum() - cal.LastPrime;
-            return View("Answer", new Answer(10, "The sum of all primes below " + n + " is", sum, Name));
+            return ViewAnswer(10, "The sum of all primes below " + n + " is", sum);
         }
 
         public ActionResult Problem27()
         {
-            return View("Question", new Question("Quadratic primes with abs(coefficients) < n?", 27, Name));
+            return ViewQuestion("Quadratic primes with abs(coefficients) < n?", 27);
         }
 
         [HttpPost]
@@ -86,12 +105,12 @@ namespace ProjectEulerSolutions.Controllers
             }
 
             string s = string.Format("a = {0} b = {1} n = 0..{2} a*b = ", max_a, max_b, max_i);
-            return View("Answer", new Answer(27, s, max_a * max_b, Name));
+            return ViewAnswer(27, s, max_a * max_b);
         }
 
         public ActionResult Problem35()
         {
-            return View("Question", new Question("Circular primes below n?", 35, Name));
+            return ViewQuestion("Circular primes below n?", 35);
         }
 
         [HttpPost]
@@ -122,7 +141,7 @@ namespace ProjectEulerSolutions.Controllers
             };
 
             int cnt = cal.Primes.Count(isCircular);
-            return View("Answer", new Answer(35, "The number of circular primes below " + n + " is", (uint) cnt, Name));
+            return ViewAnswer(35, "The number of circular primes below " + n + " is", (uint)cnt);
         }
     }
 }

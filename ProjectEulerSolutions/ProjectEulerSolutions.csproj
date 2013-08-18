@@ -150,6 +150,12 @@
     <Compile Include="Models\Question.cs" />
     <Compile Include="Models\Utils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ThirdParty\Combinatorics\Combinations.cs" />
+    <Compile Include="ThirdParty\Combinatorics\GenerateOption.cs" />
+    <Compile Include="ThirdParty\Combinatorics\IMetaCollection.cs" />
+    <Compile Include="ThirdParty\Combinatorics\Permutations.cs" />
+    <Compile Include="ThirdParty\Combinatorics\SmallPrimeUtility.cs" />
+    <Compile Include="ThirdParty\Combinatorics\Variations.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\themes\mobile\images\ajax-loader.gif" />
