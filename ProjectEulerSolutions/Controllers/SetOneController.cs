@@ -1,4 +1,5 @@
-﻿using ProjectEulerSolutions.Models;
+﻿using Facet.Combinatorics;
+using ProjectEulerSolutions.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +33,7 @@ namespace ProjectEulerSolutions.Controllers
 
         public ActionResult Index()
         {
-            int[] questions = new int[] { 7, 10, 27, 35, };
+            int[] questions = new int[] { 7, 10, 27, 35, 41 };
             return View(questions);
         }
 
@@ -142,6 +143,46 @@ namespace ProjectEulerSolutions.Controllers
 
             int cnt = cal.Primes.Count(isCircular);
             return ViewAnswer(35, "The number of circular primes below " + n + " is", (uint)cnt);
+        }
+
+        public ActionResult Problem41()
+        {
+            return ViewQuestion("Largest pandigital prime with n-digit?", 41);
+        }
+
+        [HttpPost]
+        public ActionResult Problem41(uint n)
+        {
+            if (n > 9)
+            {
+                n = 9;
+            }
+
+            // Set up prime calculator
+            var cal = new PrimeCalculator();
+
+            // Keep trying until we run out of digits.
+            while (n > 0)
+            {
+                List<int> digits = Enumerable.Range(1, (int)n).ToList();
+                var permutations = new Permutations<int>(digits);
+
+                var allPrimes = permutations.Select(numList => numList.MakeNumber())
+                    .Where(num => (num % 2 != 0) && cal.IsPrimeAutoExpand(num)).ToList();
+
+                // If there is at least 1 prime with n-digit, find the maximum amongst these primes and 
+                // that's the answer
+                if (allPrimes.Count > 0)
+                {
+                    ulong max = allPrimes.Max();
+                    return ViewAnswer(41, "The maximum " + n + "-digit pandigital prime is", max);
+                }
+
+                // Otherwise, reduce number of digits and try again.
+                --n;
+            }
+
+            return ViewAnswer(41, "No n-digit pandigital prime found.", 0);
         }
     }
 }

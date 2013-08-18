@@ -47,5 +47,10 @@ namespace ProjectEulerSolutions.Models
             }
             return (uint) num;
         }
+
+        public static ulong MakeNumber(this IEnumerable<int> digits)
+        {
+            return (ulong)(digits.Aggregate(0L, (s, n) => s * 10 + n, s => s));
+        }
     }
 }
