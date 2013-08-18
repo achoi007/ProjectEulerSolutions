@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Web;
 
 namespace ProjectEulerSolutions.Models
@@ -80,6 +81,50 @@ namespace ProjectEulerSolutions.Models
         public static IEnumerable<ulong> GetDistinctPrimeFactors(this ulong num, PrimeCalculator cal)
         {
             return num.GetPrimeFactors(cal).Distinct();
+        }
+
+        public static ulong GetSortedDigits(this ulong num)
+        {
+            var chArray = num.ToString().ToArray();
+            Array.Sort(chArray);
+            return ulong.Parse(new string(chArray));
+        }
+
+        public static IEnumerable<IList<ulong>> FindArithemeticSeries(IEnumerable<ulong> numbers, uint minLen)
+        {
+            var nums = numbers.ToArray();
+            int lastPos = nums.Length - (int) minLen;  // Need enough elements left over for consideration
+
+            for (int i = 0; i <= lastPos; i++)
+            {
+                ulong start = nums[i];
+
+                for (int j = i+1; j <= lastPos; j++)
+                {
+                    ulong dist = nums[j] - start;
+                    int prevPos = j;
+                    var listSoFar = new List<ulong>(nums.Length);
+                    listSoFar.Add(start);
+                    listSoFar.Add(nums[prevPos]);
+
+                    while (true)
+                    {
+                        ulong next = nums[prevPos] + dist;
+                        int pos = Array.BinarySearch(nums, next);
+                        if (pos < 0)
+                        {
+                            break;
+                        }
+                        listSoFar.Add(next);
+                        prevPos = pos;
+                    }
+
+                    if (listSoFar.Count() >= minLen)
+                    {
+                        yield return listSoFar;
+                    }
+                }
+            }
         }
     }
 }

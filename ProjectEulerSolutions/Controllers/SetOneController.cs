@@ -3,6 +3,7 @@ using ProjectEulerSolutions.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 
@@ -30,10 +31,16 @@ namespace ProjectEulerSolutions.Controllers
             return View("Answer", new Answer(questionNum, mesg, value, Name));
         }
 
+        // Helper function used to display answer
+        private ViewResult ViewAnswer(int questionNum, string mesg, string value)
+        {
+            return View("Answer", new Answer(questionNum, mesg, value, Name));
+        }
+
 
         public ActionResult Index()
         {
-            int[] questions = new int[] { 7, 10, 27, 35, 41, 47 };
+            int[] questions = new int[] { 7, 10, 27, 35, 41, 47, 49 };
             return View(questions);
         }
 
@@ -214,6 +221,53 @@ namespace ProjectEulerSolutions.Controllers
             }
 
             return ViewAnswer(47, "Earliest consecutive integers with " + n + " prime factors starts at", potentialLeft);
+        }
+
+        public ActionResult Problem49()
+        {
+            return ViewQuestion(49, "N 4-digit prime numbers which are permutation of each other");
+        }
+
+        [HttpPost]
+        public ActionResult Problem49(uint n)
+        {
+            var cal = new PrimeCalculator();
+            cal.ExtendToMinimumGT(9999);    // We know that the prime numbers will be 4-digit, as stated in problem
+
+            // Algorithm:
+            // 1) Find all prime numbers between 1000 to 9999, group them by permutations
+            // 2) Skip if number of permutations in group is < n
+            // 3) Find the all arithmetic sequences within group with len >= n
+            //    - Not all prime numbers with same permutation will be part of the arithemetic sequence, for example,
+            //      for 1487 -> 4817 -> 8147, 1847 won't particpate.
+
+            // Steps 1
+            var prime_grps = from p in cal.Primes
+                             where p >= 1000 && p <= 9999
+                             group p by p.GetSortedDigits() into g
+                             select g;
+
+            // Step 2
+            prime_grps = prime_grps.Where(g => g.Count() >= n);
+
+            // Step 3
+            var matched_series = prime_grps.SelectMany(g => Utils.FindArithemeticSeries(g, n));
+
+            // Stringify solution.  Each member of series separates by a comma.  Series separates by semicolon
+            var sb = new StringBuilder();
+            foreach (var series in matched_series)
+            {
+                foreach (var member in series)
+                {
+                    sb.Append(member);
+                    sb.Append(',');
+                }
+                if (sb.Length > 0) sb.Remove(sb.Length - 1, 1);    // Remove last comma
+                sb.Append(";");
+            }
+            if (sb.Length > 0) sb.Remove(sb.Length - 1, 1);        // Remove last semicolon
+
+            return ViewAnswer(49, "4-digit primes which are permutations of each other", sb.ToString());
         }
     }
 }

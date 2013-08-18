@@ -13,10 +13,16 @@ namespace ProjectEulerSolutions.Models
             Message = mesg;
             Value = value;
             Controller = controller;
+            StrValue = "";
         }
 
         public Answer(int number, string mesg, ulong value, string controller) : this(number, mesg, (long) value, controller)
         {
+        }
+
+        public Answer(int number, string mesg, string value, string controller) : this(number, mesg, 0, controller)
+        {
+            StrValue = value;
         }
 
         public int Number { get; set; }
@@ -26,5 +32,7 @@ namespace ProjectEulerSolutions.Models
         public long Value { get; set; }
 
         public string Controller { get; set; }
+
+        public string StrValue { get; set; }
     }
 }
