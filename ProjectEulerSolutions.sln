@@ -10,7 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{4C7051
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectEulerUnitTests", "ProjectEulerUnitTests\ProjectEulerUnitTests.csproj", "{FA0DEA26-7188-4BC7-92DB-E8D9F1554439}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectEulerSolutions.Tests", "ProjectEulerSolutions.Tests\ProjectEulerSolutions.Tests.csproj", "{4C6B1E8C-19A0-41DF-A31C-B94183AF727E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,10 +22,10 @@ Global
 		{26F0A2D6-F94B-4618-A1B0-A2987CD8E89C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{26F0A2D6-F94B-4618-A1B0-A2987CD8E89C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{26F0A2D6-F94B-4618-A1B0-A2987CD8E89C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FA0DEA26-7188-4BC7-92DB-E8D9F1554439}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FA0DEA26-7188-4BC7-92DB-E8D9F1554439}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FA0DEA26-7188-4BC7-92DB-E8D9F1554439}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FA0DEA26-7188-4BC7-92DB-E8D9F1554439}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C6B1E8C-19A0-41DF-A31C-B94183AF727E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C6B1E8C-19A0-41DF-A31C-B94183AF727E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C6B1E8C-19A0-41DF-A31C-B94183AF727E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C6B1E8C-19A0-41DF-A31C-B94183AF727E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

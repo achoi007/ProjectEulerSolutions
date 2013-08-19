@@ -99,7 +99,7 @@ namespace ProjectEulerSolutions.Models
             {
                 ulong start = nums[i];
 
-                for (int j = i+1; j <= lastPos; j++)
+                for (int j = i+1; j < nums.Length; j++)
                 {
                     ulong dist = nums[j] - start;
                     int prevPos = j;

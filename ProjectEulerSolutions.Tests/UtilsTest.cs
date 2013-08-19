@@ -4,21 +4,21 @@ using ProjectEulerSolutions.Models;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace ProjectEulerUnitTests
+namespace ProjectEulerSolutions.Tests
 {
     [TestClass]
     public class UtilsTest
     {
         private static IEnumerable<ulong> BuildSeries(ulong start, ulong dist, int numEntries)
         {
-            return Enumerable.Range(0, numEntries - 1).Select(i => start + dist * (ulong) i);
+            return Enumerable.Range(0, numEntries).Select(i => start + dist * (ulong) i);
         }
 
         // Check list so that list length >= numEntries and diff between consecutive elements
         // are all dist.
         private static bool CheckSeries(IList<ulong> series, ulong dist, int numEntries)
         {
-            if (series.Count() != numEntries)
+            if (series.Count() < numEntries)
             {
                 return false;
             }
@@ -64,16 +64,17 @@ namespace ProjectEulerUnitTests
             // 10,15,20,25,30,35
             var ans1 = Utils.FindArithemeticSeries(series, (uint)numEntries).ToArray();
             Assert.IsTrue(CheckSeries(ans1, dist, numEntries));
+            Assert.AreEqual(1, ans1.Count());
 
-            // 10..30 15..35 10..35
+            // 10..35 15..35
             var ans2 = Utils.FindArithemeticSeries(series, (uint)(numEntries - 1)).ToArray();
             Assert.IsTrue(CheckSeries(ans2, dist, (numEntries - 1)));
-            Assert.AreEqual(3, ans2.Count());
+            Assert.AreEqual(2, ans2.Count());
 
-            // 10..25 10..30 10..35 15..30 15..35 20..35
+            // 10..35 15..35 20..35
             var ans3 = Utils.FindArithemeticSeries(series, (uint)(numEntries - 2)).ToArray();
-            Assert.IsTrue(CheckSeries(ans3, dist, (numEntries - 1)));
-            Assert.AreEqual(6, ans2.Count());
+            Assert.IsTrue(CheckSeries(ans3, dist, (numEntries - 2)));
+            Assert.AreEqual(3, ans3.Count());
         }
 
         [TestMethod]
@@ -92,15 +93,15 @@ namespace ProjectEulerUnitTests
             var ans1 = Utils.FindArithemeticSeries(series, (uint)numEntries).ToArray();
             Assert.IsTrue(CheckSeries(ans1, dist, numEntries));
 
-            // 10..30 15..35 10..35
+            // 10..35 15..35
             var ans2 = Utils.FindArithemeticSeries(series, (uint)(numEntries - 1)).ToArray();
             Assert.IsTrue(CheckSeries(ans2, dist, (numEntries - 1)));
-            Assert.AreEqual(3, ans2.Count());
+            Assert.AreEqual(2, ans2.Count());
 
-            // 10..25 10..30 10..35 15..30 15..35 20..35
+            // 10..35 15..35 20..35
             var ans3 = Utils.FindArithemeticSeries(series, (uint)(numEntries - 2)).ToArray();
-            Assert.IsTrue(CheckSeries(ans3, dist, (numEntries - 1)));
-            Assert.AreEqual(6, ans2.Count());
+            Assert.IsTrue(CheckSeries(ans3, dist, (numEntries - 2)));
+            Assert.AreEqual(3, ans3.Count());
         }
 
         [TestMethod]
@@ -111,22 +112,23 @@ namespace ProjectEulerUnitTests
             // 11,18,25,32,39
             var series2 = BuildSeries(11, 7, 5);
             // 10,11,15,18,20,25,30,32,35,39
-            var series = series1.Concat(series2).ToArray();
+            var series = series1.Concat(series2).Distinct().ToList();
+            series.Sort();
 
             // 10..35
             var ans1 = Utils.FindArithemeticSeries(series, 6).ToArray();
             Assert.IsTrue(CheckSeries(ans1, 6));
             Assert.IsTrue(CheckSeries(ans1, 5, 6));
 
-            // 10..30 15..35 10..35, 11..39
+            // 10..35 15..35 11..39
             var ans2 = Utils.FindArithemeticSeries(series, 5).ToArray();
             Assert.IsTrue(CheckSeries(ans2, 5));
-            Assert.AreEqual(4, ans2.Count());
+            Assert.AreEqual(3, ans2.Count());
 
-            // 10..25 10..30 10..35 15..30 15..35 20..35 11..32 18..39 11..39
+            // 10..35 15..35 20..35 11..39 18..39
             var ans3 = Utils.FindArithemeticSeries(series, 4).ToArray();
             Assert.IsTrue(CheckSeries(ans3, 4));
-            Assert.AreEqual(9, ans2.Count());
+            Assert.AreEqual(5, ans3.Count());
         }
 
         [TestMethod]
@@ -145,6 +147,7 @@ namespace ProjectEulerUnitTests
             series.Add(11);
             series.Add(23);
             series.Add(31);
+            series = series.Distinct().ToList();
             series.Sort();
 
             for (int i = 2; i < 6; i++)
