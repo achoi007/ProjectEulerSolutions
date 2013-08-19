@@ -308,7 +308,7 @@ namespace ProjectEulerSolutions.Controllers
             int maxLen = 0, maxStart = 0;
             ulong maxNum = 0;
 
-            for (int end = endPos; end >= 0; end--)
+            for (int end = 0; end <= endPos; end++)
             {
                 for (int start = 0; start < end; start++)
                 {
