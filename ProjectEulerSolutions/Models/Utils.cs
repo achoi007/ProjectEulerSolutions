@@ -126,5 +126,15 @@ namespace ProjectEulerSolutions.Models
                 }
             }
         }
+
+        public static IEnumerable<ulong> CumSum(this IEnumerable<ulong> nums)
+        {
+            ulong sum = 0;
+            foreach (var num in nums)
+            {
+                sum += num;
+                yield return sum;
+            }
+        }
     }
 }

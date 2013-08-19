@@ -40,7 +40,7 @@ namespace ProjectEulerSolutions.Controllers
 
         public ActionResult Index()
         {
-            int[] questions = new int[] { 7, 10, 27, 35, 41, 47, 49 };
+            int[] questions = new int[] { 7, 10, 27, 35, 41, 47, 49, 50 };
             return View(questions);
         }
 
@@ -269,5 +269,77 @@ namespace ProjectEulerSolutions.Controllers
 
             return ViewAnswer(49, "4-digit primes which are permutations of each other", sb.ToString());
         }
+
+        public ActionResult Problem50()
+        {
+            return ViewQuestion(50, "Longest consecutive prime sum for prime below N");
+        }
+
+        [HttpPost]
+        public ActionResult Problem50(ulong n)
+        {
+            var cal = new PrimeCalculator(40000);
+            cal.ExtendToMinimumGT(n);
+
+            // Cumsums.. cumsum[i] = sum of primes[0 .. i]
+            var primes = cal.Primes;
+            var cumsums = primes.CumSum().ToArray();
+
+            // Calc sum from [fromPos, toPos]
+            Func<int, int, ulong> calcSum = (fromPos, toPos) =>
+            {
+                int before = fromPos - 1;
+                if (before >= 0)
+                {
+                    return cumsums[toPos] - cumsums[before];
+                }
+                else
+                {
+                    return cumsums[toPos];
+                }
+            };
+
+            // Find end position for range to examine.
+            int endPos;
+            for (endPos = primes.Length - 1; endPos >= 0 && primes[endPos] > n; endPos--) ;
+
+            // Loop through all possible values for [start, end] to find the longest range whose
+            // sum is still a prime
+            int maxLen = 0, maxStart = 0;
+            ulong maxNum = 0;
+
+            for (int end = endPos; end >= 0; end--)
+            {
+                for (int start = 0; start < end; start++)
+                {
+                    int len = end - start + 1;
+                    if (len < maxLen)
+                    {
+                        continue;
+                    }
+
+                    ulong sum = calcSum(start, end);
+                    if (sum > n)
+                    {
+                        continue;
+                    }
+
+                    if (!cal.IsPrimeAutoExpand(sum))
+                    {
+                        continue;
+                    }
+
+                    maxLen = len;
+                    maxNum = sum;
+                    maxStart = start;
+                }
+            }
+
+            int maxEnd = maxStart + maxLen - 1;
+            ulong maxValue = calcSum(maxStart, maxEnd);
+            var s = string.Format("{0} + .. + {1} = {2} len = {3}",
+                primes[maxStart], primes[maxEnd], maxValue, maxEnd, maxLen);
+            return ViewAnswer(50, s, maxValue);
+       }
     }
 }
